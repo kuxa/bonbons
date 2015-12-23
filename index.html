@@ -16,7 +16,7 @@
     {
      background: white url(papir.jpg) repeat;
      background-position: center center;
-     background-size: auto 40%;
+     background-size: auto 75%;
      font-family: komik;
     }
 
@@ -40,13 +40,67 @@
     {
      text-align: center;
     } 
+
+   table, #smazat
+    {
+     height: 50%;
+     margin: 0 auto;
+     width: 90%; 
+     opacity: .7;
+    } 
+
+   table
+    {
+     margin-top: 2em;
+    } 
+
+   #smazat
+    {
+     border: 1px solid black;
+     text-align: center;
+     background: black;
+     color: white;
+     font-variant: small-caps;     
+     font-size: 2.5em;
+     padding: .25em;
+    }
+
+   td
+    {
+     border: 1px solid black;
+     border-collapse: collapse;
+     text-align: center;
+     background: black;
+     color: white;
+     font-size: 2.5em;
+     padding: .25em;
+    } 
   </style>
   <script type="text/JavaScript">
   $(document).ready(function()
      {
       aktualizovat();
+      for (var i = 1; i <= 9; i++) 
+       {
+        if (i == 1 || i == 4 || i == 7)
+         $("#celkem_form table").append("<tr id='radek"+parseInt(i+2)+"'></tr>");
+        var radek = Math.ceil(i/3)*3;
+        $("#radek"+radek).append("<td>"+i+"</td>");
+       }
+
+      $("td").on("click", function() {
+        $("#celkem_form div input[type=number]").val($("#celkem_form div input[type=number]").val()+$(this).html());
+       });
+
+      $("#smazat").on("click", function() 
+       {
+        $("#celkem_form div input[type=number]").val(function()
+          {
+            var value = $(this).val();
+            return value.substr(0,value.length-1);
+          })
+       });
      });
- 
   function nastavit_pocet()
    {
     localStorage.setItem("celkem", $("#celkem_form div input[type=number]").val());
@@ -134,8 +188,11 @@
     Puvodní pocet
    </h2>
    <div>
-    <input type="number"><input type="button" value="Ok" onclick="nastavit_pocet();">
+    <input type="number" disabled><input type="button" value="OK" onclick="nastavit_pocet();">
    </div>
+   <table>
+   </table>
+   <div id="smazat">Backspace</div>
   </div>  
   <div id="zbyva">  
    <h2>
